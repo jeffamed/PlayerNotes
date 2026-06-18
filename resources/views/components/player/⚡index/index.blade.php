@@ -1,8 +1,8 @@
-<div>
+<div class="bg-white border rounded-lg shadow h-[700px]">
     <div class="border-b px-4 py-3 font-semibold">
         List of Players
     </div>
-    <div class="divide-y">
+    <div class="overflow-y-auto h-[640px]">
         @foreach ($this->players as $player)
             <button
                 wire:click="selectPlayer({{ $player }})"

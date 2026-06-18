@@ -7,11 +7,8 @@ use App\Repositories\Eloquents\PlayerRepository;
 
 class PlayerService
 {
-    protected PlayerRepositoryInterface $playerRepository;
-    public function __construct()
-    {
-        $this->playerRepository = app(PlayerRepositoryInterface::class);
-    }
+    public function __construct(protected PlayerRepositoryInterface $playerRepository)
+    {}
     public function playersWithCountNote()
     {
         return $this->playerRepository->all();

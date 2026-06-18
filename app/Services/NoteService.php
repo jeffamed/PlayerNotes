@@ -6,10 +6,8 @@ use App\Models\Note;
 use App\Repositories\Contracts\NoteRepositoryInterface;
 class NoteService
 {
-    private NoteRepositoryInterface $noteRepository;
-    public function __construct() {
-        $this->noteRepository = app(NoteRepositoryInterface::class);
-    }
+    public function __construct(private NoteRepositoryInterface $noteRepository)
+    {}
 
     public function save(int $playerId, string $comments): Note
     {
@@ -21,8 +19,8 @@ class NoteService
         return $this->noteRepository->create($data);
     }
 
-    public function byPlayer(int $playerId)
+    public function notesByPlayer(int $playerId, bool $showMyNote)
     {
-        return $this->noteRepository->listByPlayer($playerId);
+        return $this->noteRepository->listByPlayer($playerId, $showMyNote);
     }
 }

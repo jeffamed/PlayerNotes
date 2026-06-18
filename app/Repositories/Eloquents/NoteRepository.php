@@ -11,9 +11,10 @@ class NoteRepository implements NoteRepositoryInterface
     public function __construct(protected Note $note)
     {}
 
-    public function listByPlayer(int $playerId): Collection|array
+    public function listByPlayer(int $playerId, bool $showMyNotes = false): Collection|array
     {
         return $this->note->with('writer:id,name')
+            ->when($showMyNotes, fn($query) => $query->where('writer_id', auth()->user()->id))
             ->where('player_id', $playerId)
             ->get();
     }

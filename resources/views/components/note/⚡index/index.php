@@ -11,6 +11,7 @@ new class extends Component
 {
     public ?int $selectedPlayerId = 0;
     public ?string $selectPlayerName = '';
+    public bool $showMyNotes = false;
     private NoteService $noteService;
 
     public function boot()
@@ -25,7 +26,7 @@ new class extends Component
     public function notes(): Collection
     {
         if ($this->selectedPlayerId === 0) return collect([]);
-        return $this->noteService->byPlayer($this->selectedPlayerId);
+        return $this->noteService->notesByPlayer($this->selectedPlayerId, $this->showMyNotes);
     }
 
     public function save(): void
@@ -34,6 +35,11 @@ new class extends Component
         $this->noteService->save($this->selectedPlayerId, $this->content);
         $this->reset('content');
         $this->dispatch('note-saved');
+    }
+
+    public function activeMyNotes(): void
+    {
+        $this->showMyNotes = !$this->showMyNotes;
     }
 
     public function render()
