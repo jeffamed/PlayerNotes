@@ -12,12 +12,14 @@ class NoteRepository implements NoteRepositoryInterface
 
     public function listByPlayer(int $playerId)
     {
-
+        return Note::with('writer:id,name')
+            ->where('player_id', $playerId)
+            ->get();
     }
 
     public function create(array $data)
     {
-
+       return $this->note->create($data);
     }
 
     public function update(array $data)

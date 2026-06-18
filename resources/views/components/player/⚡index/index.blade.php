@@ -6,7 +6,11 @@
         @foreach ($this->players as $player)
             <button
                 wire:click="selectPlayer({{ $player }})"
-                class="w-full text-left px-4 py-3 hover:bg-gray-50 transition"
+                @class([
+                   'w-full text-left px-4 py-3 transition',
+                   'hover:bg-gray-50' => $selectedPlayer !== $player->id,
+                   'bg-blue-50 border-l-4 border-blue-500' => $selectedPlayer === $player->id,
+               ])
             >
                 <div class="flex items-center justify-between">
                     <div class="font-medium">

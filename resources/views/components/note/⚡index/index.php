@@ -2,43 +2,35 @@
 
 use App\Models\Note;
 use Livewire\Component;
-use Livewire\Attributes\On;
+use App\Services\NoteService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
-use Illuminate\Http\RedirectResponse;
 
 new class extends Component
 {
     public ?int $selectedPlayerId = 0;
     public ?string $selectPlayerName = '';
-    #[Validate('required|string|min:3|max:255')]
+
+    #[Validate('required|string|min:3|max:1000')]
     public string $content = '';
 
     #[Computed]
     public function notes(): Collection
     {
-        if ($this->selectedPlayerId === 0) {
-            return collect([]);
-        }
-        return Note::with('writer:id,name')->where('player_id', $this->selectedPlayerId)
-            ->limit(3)
-            ->orderBy('id', 'desc')
+        if ($this->selectedPlayerId === 0) return collect([]);
+
+        return Note::with('writer:id,name')
+            ->where('player_id', $this->selectedPlayerId)
             ->get();
     }
 
-    public function save()
+    public function save(NoteService $noteService): void
     {
         $this->validate();
-        \Log::info($this->content);
-        Note::create([
-            'player_id' => $this->selectedPlayerId,
-            'writer_id' => auth()->id(),
-            'comments' => $this->pull('content')
-        ]);
-        \Log::info('clean'.$this->content);
-
-        //return redirect()->back();
+        $noteService->save($this->selectedPlayerId, $this->content);
+        $this->reset('content');
+        $this->dispatch('note-saved');
     }
 
     public function render()

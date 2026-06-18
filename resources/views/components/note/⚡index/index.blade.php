@@ -30,6 +30,7 @@
                 <div class="flex gap-2">
                     <textarea
                         wire:model="content"
+                        x-on:note-saved.window="$el.value = ''"
                         rows="2"
                         placeholder="Write a note..."
                         class="flex-1 rounded-lg border-gray-300"

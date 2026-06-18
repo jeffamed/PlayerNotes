@@ -20,5 +20,4 @@ new class extends Component
     {
         $this->playerName = $playerName;
     }
-
 };
