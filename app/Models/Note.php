@@ -21,4 +21,9 @@ class Note extends Model
     {
         return $this->belongsTo(Player::class);
     }
+
+    public function writer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'writer_id');
+    }
 }
