@@ -4,20 +4,21 @@ namespace App\Repositories\Eloquents;
 
 use App\Models\Note;
 use App\Repositories\Contracts\NoteRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class NoteRepository implements NoteRepositoryInterface
 {
     public function __construct(protected Note $note)
     {}
 
-    public function listByPlayer(int $playerId)
+    public function listByPlayer(int $playerId): Collection|array
     {
-        return Note::with('writer:id,name')
+        return $this->note->with('writer:id,name')
             ->where('player_id', $playerId)
             ->get();
     }
 
-    public function create(array $data)
+    public function create(array $data): Note
     {
        return $this->note->create($data);
     }
