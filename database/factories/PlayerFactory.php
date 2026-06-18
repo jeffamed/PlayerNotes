@@ -15,7 +15,8 @@ class PlayerFactory extends Factory
     public function definition(): array
     {
         return [
-            'team' => $this->faker->randomElement(TeamsEnum::cases()),
+            'user_id' => User::factory(),
+            'team' => $this->faker->randomElement(TeamsEnum::cases())->value,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
