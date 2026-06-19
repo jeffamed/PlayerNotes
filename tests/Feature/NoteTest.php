@@ -7,13 +7,13 @@ use App\Models\User;
 use App\Services\NoteService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class NoteTest extends TestCase
 {
-    /**
-     * @test
-     */
+    use RefreshDatabase;
+    #[Test]
     public function save_note_on_the_database()
     {
         $writer = User::factory()->create();
@@ -21,12 +21,14 @@ class NoteTest extends TestCase
         $this->actingAs($writer);
         $service = app(NoteService::class);
         $note = $service->save($player->id, 'Create a note from test');
-        $this->assertDatabaseHas('notes', $note->toArray());
-        $this->assertDatabaseHas('note', [
+        $this->assertNotNull($note);
+        $this->assertDatabaseHas('notes', [
             'id' => $note->id,
             'player_id' => $player->id,
             'writer_id' => $writer->id,
             'comments' => 'Create a note from test'
         ]);
+        $this->assertEquals($player->id, $note->player_id);
+        $this->assertEquals($writer->id, $note->writer_id);
     }
 }

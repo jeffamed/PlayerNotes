@@ -11,7 +11,7 @@ class NoteRepository implements NoteRepositoryInterface
     public function __construct(protected Note $note)
     {}
 
-    public function listByPlayer(int $playerId, bool $showMyNotes = false): Collection|array
+    public function getNotesByPlayer(int $playerId, bool $showMyNotes = false): Collection|array
     {
         return $this->note->with('writer:id,name')
             ->when($showMyNotes, fn($query) => $query->where('writer_id', auth()->user()->id))
@@ -24,13 +24,6 @@ class NoteRepository implements NoteRepositoryInterface
        return $this->note->create($data);
     }
 
-    public function update(array $data)
-    {
-
-    }
-
     public function delete(int $id)
-    {
-
-    }
+    {}
 }

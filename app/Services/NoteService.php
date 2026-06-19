@@ -21,6 +21,6 @@ class NoteService
 
     public function notesByPlayer(int $playerId, bool $showMyNote)
     {
-        return $this->noteRepository->listByPlayer($playerId, $showMyNote);
+        return $this->noteRepository->getNotesByPlayer($playerId, $showMyNote);
     }
 }
