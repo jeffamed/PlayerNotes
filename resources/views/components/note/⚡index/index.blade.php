@@ -2,7 +2,8 @@
     <div class="border-b px-4 py-3 font-semibold flex items-center justify-between">
         Notes of Players {{ $selectPlayerName }}
         @if($this->selectedPlayerId !== 0 && !$isPlayer)
-        <button @class([
+        <button
+            @class([
                 'px-2 py-2 text-white rounded-lg',
                 'bg-gray-600' => !$showMyNotes,
                 'bg-blue-600' => $showMyNotes
@@ -13,7 +14,7 @@
         @endIf
     </div>
     @if($this->selectedPlayerId === 0)
-        <div class="p-4">
+        <div class="p-4 text-center">
             <p class="text-gray-500">Please select a player to view their notes.</p>
         </div>
     @endif
@@ -34,12 +35,12 @@
                 </div>
             @endforeach
         </div>
-        @if(!$this->isPlayer && $this->selectedPlayerId !== 0)
+        @if(!$this->isPlayer && $this->selectedPlayerId !== 0 && auth()->user()->can('note_create'))
         <div class="border-t p-4">
             <form wire:submit="save">
                 <div class="flex gap-2">
                     <textarea
-                        wire:model="content"
+                        wire:model="form.comments"
                         x-on:note-saved.window="$el.value = ''"
                         rows="2"
                         placeholder="Write a note..."
@@ -49,7 +50,7 @@
                         Send
                     </button>
                 </div>
-                @error('content') <span style="color: red;">{{ $message }}</span> @enderror
+                @error('form.comments') <span style="color: red;">{{ $message }}</span> @enderror
             </form>
         </div>
         @endif

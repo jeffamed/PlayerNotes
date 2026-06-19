@@ -1,15 +1,15 @@
 <?php
 
-use App\Models\Note;
 use Livewire\Component;
 use App\Services\NoteService;
+use App\Livewire\Forms\NoteForm;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
 
 new class extends Component
 {
     private NoteService $noteService;
+    public NoteForm $form;
     public ?int $selectedPlayerId = 0;
     public ?string $selectPlayerName = '';
     public bool $showMyNotes = false;
@@ -25,9 +25,6 @@ new class extends Component
         $this->noteService = app(NoteService::class);
     }
 
-    #[Validate('required|string|min:3|max:1000')]
-    public string $content = '';
-
     #[Computed]
     public function notes(): Collection
     {
@@ -37,9 +34,9 @@ new class extends Component
 
     public function save(): void
     {
-        $this->validate();
-        $this->noteService->save($this->selectedPlayerId, $this->content);
-        $this->reset('content');
+        $this->form->validate();
+        $this->noteService->save($this->selectedPlayerId, $this->form->all());
+        $this->form->reset('content');
         $this->dispatch('note-saved');
     }
 

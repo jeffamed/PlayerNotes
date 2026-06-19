@@ -9,14 +9,13 @@ class NoteService
     public function __construct(private NoteRepositoryInterface $noteRepository)
     {}
 
-    public function save(int $playerId, string $comments): Note
+    public function save(int $playerId, array $data): Note
     {
-        $data = [
+        $additionalData = [
             'player_id' => $playerId,
-            'comments' => $comments,
             'writer_id' => auth()->user()->id
         ];
-        return $this->noteRepository->create($data);
+        return $this->noteRepository->create(array_merge($data, $additionalData));
     }
 
     public function notesByPlayer(int $playerId, bool $showMyNote)
