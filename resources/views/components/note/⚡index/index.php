@@ -9,10 +9,16 @@ use Illuminate\Support\Collection;
 
 new class extends Component
 {
+    private NoteService $noteService;
     public ?int $selectedPlayerId = 0;
     public ?string $selectPlayerName = '';
     public bool $showMyNotes = false;
-    private NoteService $noteService;
+    public bool $isPlayer = false;
+
+    public function mount()
+    {
+        $this->isPlayer = auth()->user()->hasRole('player');
+    }
 
     public function boot()
     {

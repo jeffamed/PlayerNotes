@@ -1,7 +1,7 @@
 <div class="bg-white border rounded-lg shadow h-[700px] flex flex-col">
     <div class="border-b px-4 py-3 font-semibold flex items-center justify-between">
         Notes of Players {{ $selectPlayerName }}
-        @if($this->selectedPlayerId !== 0)
+        @if($this->selectedPlayerId !== 0 && !$isPlayer)
         <button @class([
                 'px-2 py-2 text-white rounded-lg',
                 'bg-gray-600' => !$showMyNotes,
@@ -34,7 +34,7 @@
                 </div>
             @endforeach
         </div>
-        @if(auth()->user()->can('note_create') && $this->selectedPlayerId !== 0)
+        @if(!$this->isPlayer && $this->selectedPlayerId !== 0)
         <div class="border-t p-4">
             <form wire:submit="save">
                 <div class="flex gap-2">
